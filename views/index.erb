@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Todo App</title>
+</head>
+<body>
+<form action="/add" method="POST"> <!-- this form action is calling the add task in the post  from the file ToDoApp.rb -->
+
+<input type="text" name="task" />
+<br>
+<input type = "checkbox" value = "important" name = "important"> important<br>
+<input type = "checkbox" value = "urgent" name = "urgent">urgent<br>
+<!-- this input creates an text input field which is assigned a name  i.e. task which can be accessed using "params["task"]"-->
+<br>
+
+<input type="submit" value="Add Task" />
+<!-- This forms a submit button and its value is basically the text displayed on th button -->
+
+</form>
+<!-- this marks the ending of the form -->
+
+
+
+<ul>
+
+
+<% tasks.each do |todo| %>
+<!-- tasks is the array containing TODO class objects and we iterate over each of these objects and return them to the browser-->
+	
+	<% if todo.done %>
+		<% if todo.important == "important" && todo.urgent == "urgent" %> 
+		<li class = "strikethrough , both">
+		<% elsif todo.important == "important" %>
+		<li class = "strikethrough , important">
+		<% elsif todo.urgent == "urgent" %>
+		<li class = "strikethrough , urgent">
+		<%else %>
+		<li class = "strikethrough , none"> 
+		<% end %>
+	<%else%>
+		<% if todo.important == "important" && todo.urgent == "urgent" %> 
+		<li class = "both">
+		<% elsif todo.important == "important" %>
+		<li class = "important">
+		<% elsif todo.urgent == "urgent" %>
+		<li class = "urgent">
+		<%else %>
+		<li class = "none"> 
+		<% end %>
+	<% end %>
+	<!-- this section is basically the CSS formatting of the task name-->
+
+	<%= todo.task %>
+	<!-- this return the task instance variable of the TODO object stored in the task array-->
+
+	<form action="/done" method="POST"> <!--  this forms call the /done get written in TodoApp.rb   -->
+
+	<input type="hidden" name="task" value="<%= todo.task %>">
+	<% if todo.done %>
+	<input type="submit" value="UnDone">
+	<% else %>
+	<input type="submit" value="Done">
+	<% end %>
+
+</form>
+
+</li>
+
+<% end %>
+
+</ul>
+<!--  Css desription of its class-->
+<style type="text/css"> 
+.strikethrough {
+	text-decoration: line-through;
+}
+.urgent{
+	color: green;
+	font-style: italic;
+}
+.important{
+	color: blue;
+	font-style: italic;
+}
+.both{
+	color: red;
+	font-style:bold; 
+}
+.none{
+	color: black;
+}
+</style>
+
+
+
+</body>
+</html>

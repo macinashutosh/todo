@@ -1,0 +1,118 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+  <title>TO-DO APP</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="jumbotron">
+    <h1>TO-DO APP</h1>      
+    <p> ARRANGE LIKE NEVER BEFORE</p>
+  </div>
+ </div>
+
+
+ <form class="form-horizontal" action="/add" method="POST" >
+  <div class="form-group">
+    <label class="control-label col-sm-2  col-sm-offset-3" for="TaskName">Add Task:</label>
+    <div class="col-sm-2">
+      <input type="text" class="form-control" name="task" id="TaskName" placeholder="Add your task Here">
+    </div>
+  </div>
+  
+  <div class="form-group"  > 
+    <div class="col-sm-offset-5 col-sm-10">
+      <div class="checkbox">
+        <label><input type="checkbox" value="urgent" name="urgent"> Urgent </label>
+        <label><input type="checkbox" value="important" name="important"> Important </label>
+      </div>
+    </div>
+  </div>
+  <div class="form-group"> 
+    <div class="col-sm-offset-5 col-sm-10">
+      <button type="submit" class="btn btn-default">ADD TASK</button>
+    </div>
+  </div>
+</form>
+	<div class="container">
+	<div class="row">
+	<div class="col-lg-4 col-sm-offset-4">
+	<ul class="list-group">
+
+
+	<% tasks.each do |todo| %>
+<!-- tasks is the array containing TODO class objects and we iterate over each of these objects and return them to the browser-->
+	
+	<% if todo.done %>
+		<% if todo.important == "important" && todo.urgent == "urgent" %> 
+		<li class = "strikethrough , list-group-item list-group-item-danger">
+		<% elsif todo.important == "important" %>
+		<li class = "strikethrough , list-group-item list-group-item-warning">
+		<% elsif todo.urgent == "urgent" %>
+		<li class = "strikethrough , list-group-item list-group-item-info">
+		<%else %>
+		<li class = "strikethrough , list-group-item list-group-item-success"> 
+		<% end %>
+	<%else%>
+		<% if todo.important == "important" && todo.urgent == "urgent" %> 
+		<li class="list-group-item list-group-item-danger">
+		<% elsif todo.important == "important" %>
+		<li class="list-group-item list-group-item-warning">
+		<% elsif todo.urgent == "urgent" %>
+		<li class="list-group-item list-group-item-info">
+		<%else %>
+		<li class="list-group-item list-group-item-success"> 
+		<% end %>
+	<% end %>
+	<!-- this section is basically the CSS formatting of the task name-->
+	<div class="beautyFont">
+	<%= todo.task %>
+	</div>
+	<!-- this return the task instance variable of the TODO object stored in the task array-->
+
+	<form action="/done" method="POST"> <!--  this forms call the /done get written in TodoApp.rb   -->
+	<input type="hidden" name="task" value="<%= todo.task %>">
+	<% if todo.done %>
+	<div class="row">	
+	<div class="col-sm-1 col-sm-offset-8">
+	<input type="submit" class="btn btn-info" value="UnDone">
+	</div>
+	</div>
+	<% else %>
+	<div class="row">	
+	<div class="col-sm-1 col-sm-offset-8">
+	<input type="submit" class="btn btn-info" value="Done">
+	</div>
+	</div>
+	<% end %>
+	
+	</form>
+
+	</li>
+
+	<% end %>
+
+	</ul>
+	</div>
+	</div>
+	</div>
+	<!--  Css desription of its class-->
+	<style type="text/css"> 
+	.strikethrough {
+	text-decoration: line-through;
+	}
+	.beautyFont{
+		font-family: "Times New Roman", Times, serif ;
+		font-size: 25px;
+	}
+</style>
+
+</body>
+</html>
+​
